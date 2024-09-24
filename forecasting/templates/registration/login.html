@@ -1,13 +1,22 @@
 <!-- templates/registration/login.html -->
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block title %}Log In{% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
+<div class="flex-row space-y-2">
+  <div class="flex justify-center items-center">
+    <h2 class="text-3xl">Please Log In</h2>
+  </div>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
+  {{ form|crispy }}
 </form>
+<div class ="flex space-x-0 gap-2 columns-2 ">
+  <button class="btn" type="submit">Log In</button>
+  <button class="btn" onclick="location.href= '/'">Cancel</button>
+  </div>
+</div>
+</div>
 {% endblock %}

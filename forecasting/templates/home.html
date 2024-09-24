@@ -5,14 +5,20 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-  <h1 class="text-4xl">Hi {{ user.username }}!</h1>
+<div class="flex items-center">
+  <h1 class="text-4xl ">Hi {{ user.username }}!</h1>
   <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
-    <button type="submit">logout</button>
+    <button class="btn" type="submit">logout</button>
 </form>
+</div>
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a> |
-  <a href="{% url 'signup' %}">Sign Up</a>
+<div class="flex-row">
+  <div class ="justify-center items-center">
+    <p>You are not logged in</p>
+    <button class="btn" onclick="location.href= '/accounts/login'">Log In</button>
+    <button class="btn" onclick="location.href='/accounts/signup'">Sign Up</button>
+  </div>
+</div>
 {% endif %}
 {% endblock %}

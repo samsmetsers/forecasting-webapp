@@ -1,13 +1,26 @@
 <!-- templates/registration/signup.html -->
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<h2>Sign Up</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Sign Up</button>
-</form>
+<div class="flex-row">
+  <div class="flex justify-center items-center">
+    <h2 class="text-3xl">Sign Up</h2>
+  </div>
+  
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}  
+  </form>
+  <div class="flex-row">
+    <div class ="justify-center items-center">
+    <button class="btn" type="submit">Sign Up</button>
+    <span></span>
+    <button class="btn" onclick="location.href= '/'">Cancel</button>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
