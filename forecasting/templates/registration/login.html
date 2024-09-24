@@ -9,14 +9,14 @@
   <div class="flex justify-center items-center">
     <h2 class="text-3xl">Please Log In</h2>
   </div>
-<form method="post">
+<form class="space-y-1" method="post">
   {% csrf_token %}
   {{ form|crispy }}
-</form>
-<div class ="flex space-x-0 gap-2 columns-2 ">
-  <button class="btn" type="submit">Log In</button>
-  <button class="btn" onclick="location.href= '/'">Cancel</button>
+  <div class ="flex gap-2 columns-2 ">
+    <button class="btn" type="submit">Log In</button>
+    <button class="btn" onclick="location.href= '/'">Cancel</button>
+    </div>
   </div>
-</div>
+</form>
 </div>
 {% endblock %}
