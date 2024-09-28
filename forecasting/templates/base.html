@@ -6,7 +6,7 @@
   <title>{% block title %}ForecastInGame{% endblock %}</title>
   {% tailwind_css %}
 </head>
-<body class="h-screen flex items-center justify-center bg-gray-light">
+<body class="h-screen bg-gray-light">
 
   <!-- Add this
   <nav class="bg-green-50 border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800">
@@ -36,10 +36,10 @@
         </ul>
       </div>
     </div> -->
-    <div class="container flex flex-wrap items-center justify-center mx-auto mt-4">
-      {% block content %}
-      {% endblock %}
-    </div>
+    
+    {% block content %}
+    {% endblock %}
+    
   </nav>
 </body>
 </html>

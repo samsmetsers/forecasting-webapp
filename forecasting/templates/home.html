@@ -4,17 +4,51 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+{% load static %}
 {% if user.is_authenticated %}
-<div class="flex items-center">
-  <h1 class="text-4xl ">Hi {{ user.username }}!</h1>
-  <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button class="btn" type="submit">logout</button>
-</form>
+<div class="flex justify-center items-center">
+  <div class="flex-row">
+    <div class="flex justify-center">
+      <h1 class="text-4xl ">Hi {{ user.username }}!</h1>
+    </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="grid-cols-1 card bg-neutral-200 w-96 shadow-xl">
+        <figure>
+          <img src=" {% static 'images/forecastinglogo.png' %}" alt="forecastinglogo" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title justify-center">Single Player Game</h2>
+          <p class="text-center">Play a single-player forecasting game</p>
+          <div class="card-actions justify-end">
+            <button class="btn btn-neutral">Play now</button>
+          </div>
+        </div>
+      </div>
+      <div class="grid-cols-2 card bg-base-300 w-96 shadow-xl">
+        <figure>
+          <img src=" {% static 'images/forecastinglogo.png' %}" alt="forecastinglogo" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title justify-center">Multi Player Game</h2>
+          <p class="text-center">Host a game or join a game with your friends/colleagues!</p>
+          <div class="card-actions justify-end">
+            <button class="btn btn-disabled ">Coming soon</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex justify-center">    
+      <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button class="btn" type="submit">logout</button>
+    </form>
+    </div>
+  </div>
 </div>
+
 {% else %}
 <div class="flex-row">
-  <div class ="justify-center items-center">
+  <div class="justify-center items-center">
     <p>You are not logged in</p>
     <button class="btn" onclick="location.href= '/accounts/login'">Log In</button>
     <button class="btn" onclick="location.href='/accounts/signup'">Sign Up</button>
