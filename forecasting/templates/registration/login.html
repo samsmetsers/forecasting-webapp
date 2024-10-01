@@ -1,22 +1,44 @@
 <!-- templates/registration/login.html -->
 {% extends "base.html" %}
 {% load tailwind_filters %}
+{% load static %}
+{% load crispy_forms_tags %}
 
 {% block title %}Log In{% endblock %}
 
 {% block content %}
-<div class="flex-row space-y-2">
-  <div class="flex justify-center items-center">
-    <h2 class="text-3xl">Please Log In</h2>
+{% if user.is_authenticated %}
+<div class ="grid justify-center items-center">
+  <br>
+  <h2 class="grid-rows-1 text-neutral-800 text-3dxl justify-center items-center font-bold mb-5">You are already logged-in, please return to the home-page</h2>
+  <div class="flex grid-rows-2 justify-center">
+    <button class="btn" onclick="location.href= '/'">Return</button>
   </div>
-<form class="space-y-1" method="post">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <div class ="flex gap-2 columns-2 ">
-    <button class="btn" type="submit">Log In</button>
-    <button class="btn" onclick="location.href= '/'">Cancel</button>
+</div>
+{% else %}
+<div
+  class="hero min-h-screen"
+  style="background-image: url({% static 'images/herobanner.png' %})">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <div class="card bg-gray-light w-96 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-neutral-800 text-3dxl justify-center items-center font-bold mb-5">Please Log In</h2>
+          <form class="space-y-1 text-gray-dark" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <br>
+            <div class ="card-actions flex gap-2 columns-2 justify-center">
+              <button class="btn" type="submit">Log In</button>
+              <button class="btn" onclick="location.href= '/'">Cancel</button>
+              </div>
+          </form>
+        </div>
+      </div>      
     </div>
   </div>
-</form>
 </div>
+{% endif %}
+
 {% endblock %}
