@@ -1,17 +1,25 @@
 from django.db import models
 from accounts.models import GameUser
+import uuid
+
+EASY = "Easy"
+NORMAL = "Normal"
+HARD = "Hard"
+
+DIFFICULTY_CHOICES = ((EASY, "Easy"), (NORMAL, "Normal"), (HARD, "Hard"))
 
 # Create your models here.
 class Game(models.Model):
-    game_id = models.PositiveBigIntegerField(primary_key=True)
-    game_host = models.ForeignKey(GameUser, name='Game host', on_delete=models.CASCADE)
-    active = models.BooleanField(name="Active Game")
+    game_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    game_host = models.ForeignKey(GameUser, name='GameUser', on_delete=models.CASCADE)
+    active = models.BooleanField(name="Active")
+    difficulty = models.CharField(max_length=6, choices=DIFFICULTY_CHOICES, default="Normal")
 
     class Meta:
         abstract = True
 
 class SingleplayerGame(Game):
-    score = models.FloatField(name="Game score")
+    score = models.FloatField(name="Score")
 
 class MultiplayerGame(Game):
     players = models.ManyToManyField(GameUser, related_name="Players")

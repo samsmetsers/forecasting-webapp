@@ -34,6 +34,7 @@ NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -79,7 +80,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'forecasting.wsgi.application'
-
+ASGI_APPLICATION = 'forecasting.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
