@@ -5,9 +5,11 @@ from accounts.models import GameUser
 from .models import SingleplayerGame, MultiplayerGame
 from .forms import SingleplayerGameForm
 import pandas as pd
+import numpy as np
 from plotly.offline import plot
-import plotly.express as px
+import plotly.graph_objects as go
 import django.utils.timezone as tz
+import datetime
 import pickle
 
 # Create your views here.
@@ -33,18 +35,16 @@ def CreateSinglePlayerGameView(request):
         form.data['GameUser'] = request.user
         form.data['Score'] = 0.0
         form.data['Active'] = True
-        form.data['Start'] = tz.now()
-        form.data['End'] = tz.now()
+
+        dataframe = generate_data.generate_data(difficulty=form.data["difficulty"])
+
+        form.data['Start'] = dataframe.index[0]
+        form.data['End'] = dataframe.index[-1]
+        form.data['Data'] = {'data':np.array2string(dataframe["Values"].to_numpy())}
+        form.data['Predictions'] = {'data':np.array2string(dataframe["Predictions"].to_numpy())}
 
         if form.is_valid():
             model = form.save()
-            dataframe = generate_data.generate_data(difficulty=model.difficulty)
-            model.start = dataframe.index[0]
-            model.end = dataframe.index[-1]
-            model.game_data = pickle.dumps(dataframe["Values"].to_numpy())
-            model.prediction_data = pickle.dumps(dataframe["Predictions"].to_numpy())
-            model.save()
-            print(model.end)
         else:
             print(form.errors)
         
@@ -57,5 +57,17 @@ def CreateSinglePlayerGameView(request):
 @login_required(login_url='/accounts/login/')
 def SinglePlayerGameView(request, game_id):
     game = SingleplayerGame.objects.get(game_id=game_id)
-    return render(request, 'game/single_player_game.html', {'game_id':game_id, 'game':game})
+
+    game_data = np.fromstring(game.Data['data'][1:-1], dtype=int, sep=' ')
+    prediction_data = np.fromstring(game.Predictions['data'][1:-1], dtype=int, sep=' ')
+    start_date = game.Start.date()
+    end_date = game.End.date()
+    date_array = pd.date_range(start=start_date,end=end_date, freq=datetime.timedelta(days=1))
+
+    figure = go.Figure()
+    
+    figure.add_trace(go.Scatter(x=date_array, y=game_data, name="Values", mode='lines'))
+    plt = plot(figure, output_type="div")
+
+    return render(request, 'game/single_player_game.html', {'game_id':game_id, 'game':game, 'plot_div':plt})
 
