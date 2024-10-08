@@ -64,10 +64,22 @@ def SinglePlayerGameView(request, game_id):
     end_date = game.End.date()
     date_array = pd.date_range(start=start_date,end=end_date, freq=datetime.timedelta(days=1))
 
-    figure = go.Figure()
+    figure = go.FigureWidget()
+    config = {'displaylogo': False}
+    figure.update_layout(modebar={
+            'orientation': 'v'}, 
+        template="plotly_white")
     
+    figure.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        xaxis = dict(
+        tickmode = 'array',
+        tickvals =  date_array[::7])
+    )
+        
+
     figure.add_trace(go.Scatter(x=date_array, y=game_data, name="Values", mode='lines'))
-    plt = plot(figure, output_type="div")
+    plt = plot(figure, output_type="div", config=config)
 
     return render(request, 'game/single_player_game.html', {'game_id':game_id, 'game':game, 'plot_div':plt})
 
